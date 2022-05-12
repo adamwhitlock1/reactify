@@ -1,0 +1,35 @@
+@use '@scss/abstracts/variables' as *;
+
+html {
+  font-size: 10px;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+  width: 100vw;
+
+  background-color: $theme-600;
+}
+
+a, p {
+  font-size: 1.8rem;
+}
+
+a.button {
+  color: $theme-700;
+  font-family: $font;
+  font-weight: $heading;
+  text-transform: uppercase;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  background-color: $theme-blue;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: white;
+  }
+}
