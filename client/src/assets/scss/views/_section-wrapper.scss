@@ -1,0 +1,35 @@
+@use "@scss/abstracts/variables" as *;
+
+.section__detail {
+  margin-top: 5rem;
+}
+
+.section__inner {
+  background-color: rgba(white, 10%);
+  border-radius: 2rem;
+
+  max-width: 114rem;
+  width: 100%;
+
+  padding-inline: 2.4rem;
+  padding-block: 2rem;
+  margin-inline: auto;
+}
+
+.section__top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.section__header,
+.section__header a {
+  font-family: $headerFont;
+  font-size: 3.2rem;
+  color: white;
+}
+
+.section__see-all {
+  color: white;
+  text-decoration: underline;
+}

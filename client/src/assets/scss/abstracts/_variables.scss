@@ -2,7 +2,13 @@ $theme-blue: #61dafb;
 $theme-800: #16181d;
 $theme-700: #20232a;
 $theme-600: #282C34;
+$theme-500: #4e5666;
+$theme-400: #747e92;
 
-$font: 'Roboto', sans-serif;
-$body: 400;
-$heading: 900;
+$bodyFont: 'PT Sans Narrow', sans-serif;
+$headerFont: 'Poppins', sans-serif;
+
+$base: all 0.3s ease-in-out;
+
+$header: 16vh;
+$login: 84vh

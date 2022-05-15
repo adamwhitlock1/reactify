@@ -1,0 +1,24 @@
+@use "@scss/abstracts/variables" as *;
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: $header;
+
+  padding-inline: 10rem;
+  padding-block: 2.4rem;
+
+  > div {
+    flex: 1 0 33%;
+  }
+}
+
+.logo {
+  text-align: center;
+
+  img {
+    margin-inline: auto;
+  }
+}

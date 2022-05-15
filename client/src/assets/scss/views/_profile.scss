@@ -1,0 +1,58 @@
+@use "@scss/abstracts/variables" as *;
+
+.section__profile {
+  .content__wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+
+    background-color: rgba(white, 10%);
+    border-radius: 2rem;
+
+    padding-inline: 2rem;
+    padding-block: 2.4rem;
+    backdrop-filter: blur(0.5rem);
+  }
+
+  .profile__image {
+    max-width: 18rem;
+    max-height: 18rem;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+
+    overflow: hidden;
+  }
+
+  .profile__info {
+    h1 {
+      font-size: 8.4rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-family: $bodyFont;
+      color: $theme-blue;
+    }
+  }
+
+  .profile__stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    p,
+    a {
+      color: white;
+      font-size: 1.6rem;
+    }
+
+    a {
+      transition: $base;
+
+      &:hover {
+        color: $theme-blue;
+      }
+    }
+  }
+}

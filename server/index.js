@@ -13,7 +13,7 @@ const generateRandomString = length => {
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   
   for ( let i = 0; i < length; i++ ) {
-    text += possible.charAt(Math.floor(Math.random() * possible.lenght))
+    text += possible.charAt(Math.floor(Math.random() * possible.length))
   }
   
   return text
@@ -33,7 +33,11 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
   const stateKey = 'spotify_auth_state'
   const state = generateRandomString(16)
-  const scope = 'user-read-private user-read-email'
+  const scope = [
+    'user-read-private',
+    'user-read-email',
+    'user-top-read',
+  ].join(' ')
   
   const loginparams = new URLSearchParams({
     client_id: CLIENT_ID,
@@ -41,12 +45,11 @@ app.get('/login', (req, res) => {
     redirect_uri: REDIRECT_URI,
     state: state,
     scope: scope,
-  })
+  }).toString()
   
-  const queryParams = loginparams.toString()
   res.cookie(stateKey, state)
   
-  res.redirect(`https://accounts.spotify.com/authorize?${queryParams}`)
+  res.redirect(`https://accounts.spotify.com/authorize?${loginparams}`)
 })
 
 //CALLBACK
@@ -72,20 +75,24 @@ app.get('/callback', (req, res) => {
   .then(response => {
     if ( response.status === 200 ) {
       
-      const { access_token, refresh_token } = response.data
-
-      const redirectparams = new URLSearchParams({
+      const { access_token, refresh_token, expires_in } = response.data
+      
+      const refreshparams = new URLSearchParams({
         access_token,
-        refresh_token
-      })
+        refresh_token,
+        expires_in,
+      }).toString()
 
-      res.redirect(`http://localhost:3000/?${redirectparams.toString()}`)
-
+      
+      res.redirect(`http://localhost:3000/?${refreshparams}`)
+      
     } else {
+
       const errorparams = new URLSearchParams({
         error: 'invalid_token'
-      })
-      res.redirect(`/?${errorparams.toString()}`)
+      }).toString()
+
+      res.redirect(`/?${errorparams}`)
     }
   })
 
@@ -99,12 +106,12 @@ app.get('/refresh_token', (req, res) => {
   const refreshparams = new URLSearchParams({
     grant_type: 'refresh_token',
     refresh_token: refresh_token
-  })
+  }).toString()
 
   axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
-    data: refreshparams.toString(),
+    data: refreshparams,
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`,

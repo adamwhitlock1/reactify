@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-const path = require('path')
+const path = require('path');
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,8 +9,21 @@ export default defineConfig({
   base: './',
   resolve: {
     alias: {
+      '@src': path.resolve(__dirname, './src'),
       '@scss': path.resolve(__dirname, './src/assets/scss'),
-      '@ico': path.resolve(__dirname, './src/assets/ico')
-    }
-  }
-})
+      '@img': path.resolve(__dirname, './src/assets/img'),
+      '@ico': path.resolve(__dirname, './src/assets/ico'),
+      '@comps': path.resolve(__dirname, './src/components')
+    },
+  },
+  server: {
+    proxy: {
+      '/refresh_token': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      }
+    },
+  },
+});

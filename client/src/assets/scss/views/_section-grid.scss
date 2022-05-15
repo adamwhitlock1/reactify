@@ -1,0 +1,36 @@
+@use "@scss/abstracts/variables" as *;
+
+.grid__list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2rem;
+  margin-top: 2.4rem;
+}
+.grid__item {
+  position: relative;
+  background-color: $theme-600;
+  padding: 2rem;
+}
+
+.grid__item--img {
+  height: 15rem;
+  width: 15rem;
+
+  border-radius: 50%;
+  border: 0.2rem solid $theme-blue;
+  overflow: hidden;
+
+  margin-inline: auto;
+}
+
+.grid__item--name {
+  color: white;
+  font-size: 1.8rem;
+  font-family: $headerFont;
+  margin-top: 2.4rem;
+}
+
+.grid__item--label {
+  color: white;
+  font-size: 1.25rem;
+}

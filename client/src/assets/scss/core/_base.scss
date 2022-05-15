@@ -5,31 +5,76 @@ html {
 }
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
   min-height: 100vh;
   width: 100vw;
 
-  background-color: $theme-600;
+  background-image: url("@img/hero.png");
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+  background-color: $theme-800;
 }
 
-a, p {
+a, p, button {
   font-size: 1.8rem;
+  font-family: $bodyFont;
 }
 
-a.button {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $headerFont;
+  line-height: 1;
+}
+
+.button {
   color: $theme-700;
-  font-family: $font;
-  font-weight: $heading;
-  text-transform: uppercase;
+  font-family: $headerFont;
+  font-weight: 800;
+  text-transform: lowercase;
+
+  display: block;
+  width: max-content;
+  margin-inline: auto;
+
+  background-color: $theme-blue;
+  border-radius: 100px;
+  border: 0.2rem solid $theme-blue;
+
   padding-inline: 2rem;
   padding-block: 1rem;
-  background-color: $theme-blue;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: white;
+    background-color: transparent;
+    color: $theme-blue;
   }
+}
+
+[data-button="login"] {
+  margin-top: 5rem;
+}
+
+[data-button="logout"] {
+  font-size: 1.4rem;
+  padding-block: 0.5rem;
+  padding-inline: 1.25rem;
+  margin-inline: unset;
+}
+
+.content__wrapper {
+  max-width: 1140px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.separator {
+  height: 0.75rem;
+  width: 0.75rem;
+  background-color: white;
+  border-radius: 50%;
 }
