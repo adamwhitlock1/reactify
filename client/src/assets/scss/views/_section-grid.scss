@@ -5,6 +5,10 @@
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 2rem;
   margin-top: 2.4rem;
+
+  &[data-type="artists"] .grid__item--img {
+    border-radius: 50%;
+  }
 }
 .grid__item {
   position: relative;
@@ -20,7 +24,6 @@
   height: 15rem;
   width: 15rem;
 
-  border-radius: 50%;
   border: 0.2rem solid $theme-blue;
   overflow: hidden;
 

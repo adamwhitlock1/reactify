@@ -1,7 +1,6 @@
 import { formatTrackDuration } from "../utils"
 
 const TrackList = ({ tracks }) => {
-  console.log(tracks)
   return (
     <>
     {tracks && tracks.length ? (

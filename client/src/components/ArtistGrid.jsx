@@ -2,7 +2,7 @@ const SectionGrid = ({ artists }) => {
   return (
     <>
       {artists && artists.length ? (
-        <ul className="grid__list">
+        <ul className="grid__list" data-type="artists">
           {artists.map((artist, index) => {
             return (
               <a href={ artist.external_urls.spotify } target="_blank" key={ index }>

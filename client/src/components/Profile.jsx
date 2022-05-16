@@ -6,7 +6,7 @@ import {
   getCurrentUserTopItems
 } from '@src/spotify'
 
-import { SectionWrapper, SectionGrid, TrackList } from '@comps'
+import { SectionWrapper, ArtistGrid, TrackList, PlaylistGrid } from '@comps'
 
 const Profile = () => {
   const [profile, setProfile] = useState(null)
@@ -69,13 +69,13 @@ const Profile = () => {
         </section>
       )}
 
-      {topArtists && topTracksLong && (
+      {topArtists && topTracksLong && playlists && (
         <main>
           <SectionWrapper
             sectionId="section__top-artists"
             title="Top Artists of the Month"
             seeAllLink="/top-artists">
-            <SectionGrid artists={ topArtists.items }></SectionGrid>
+            <ArtistGrid artists={ topArtists.items }/>
           </SectionWrapper>
           
           <SectionWrapper
@@ -96,7 +96,14 @@ const Profile = () => {
                     This Month
                   </button>
               </div>
-              <TrackList tracks={ useLong === true ? topTracksLong.items : topTracksShort.items }></TrackList>
+              <TrackList tracks={ useLong === true ? topTracksLong.items : topTracksShort.items }/>
+          </SectionWrapper>
+
+          <SectionWrapper
+            sectionId="section__playlists"
+            title="Playlists"
+            seeAllLink="/playlists">
+            <PlaylistGrid playlists={ playlists.items.slice(0, 8) }/>
           </SectionWrapper>
         </main>
       )}
