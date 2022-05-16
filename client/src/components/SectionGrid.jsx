@@ -1,23 +1,24 @@
 const SectionGrid = ({ artists }) => {
-  console.log(artists)
   return (
     <>
       {artists && artists.length ? (
         <ul className="grid__list">
           {artists.map((artist, index) => {
             return (
-            <li className="grid__item" key={ index }>
-              <div className="grid__item--inner">
-                {artist.images[0] && (
-                  <div className="grid__item--img">
-                    <img src={ artist.images[0].url } alt={ artist.name } />
+              <a href={ artist.external_urls.spotify } target="_blank" key={ index }>
+                <li className="grid__item">
+                  <div className="grid__item--inner">
+                    {artist.images[0] && (
+                      <div className="grid__item--img">
+                        <img src={ artist.images[0].url } alt={ artist.name } />
+                      </div>
+                    )}
+                    <h3 className="grid__item--name">{ artist.name }</h3>
+                    <p className="grid__item--label">{ artist.type }</p>
                   </div>
-                )}
-                <h3 className="grid__item--name">{ artist.name }</h3>
-                <p className="grid__item--label">{ artist.type }</p>
-              </div>
-            </li>
-            )
+                </li>
+              </a>
+              )
           })}
         </ul>
       ) : (

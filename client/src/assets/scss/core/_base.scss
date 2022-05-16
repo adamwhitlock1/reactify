@@ -66,6 +66,17 @@ h6 {
   margin-inline: unset;
 }
 
+[data-button="select"] {
+  color: white;
+  font-size: 1.4rem;
+  
+  padding-block: 1rem;
+
+  &.active {
+    color: $theme-blue;
+  }
+}
+
 .content__wrapper {
   max-width: 1140px;
   width: 100%;

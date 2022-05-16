@@ -1,0 +1,70 @@
+@use "@scss/abstracts/variables" as *;
+
+.track__number p,
+.track__name {
+  color: white;
+  font-family: $headerFont;
+}
+
+.track__album p,
+.track__duration p {
+  color: $theme-400;
+}
+
+.track__item,
+.track__info {
+  display: flex;
+  align-items: center;
+}
+
+.track__item {
+  width: 100%;
+}
+
+.track__number {
+  width: 2.4rem;
+}
+
+.track__item {
+  margin-top: 2rem;
+}
+
+.track__info {
+  gap: 0.75rem;
+
+  width: 36rem;
+  margin-left: 1rem;
+}
+
+.track__details--img {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+
+.track__name,
+.track__artist {
+  line-height: 1;
+}
+
+.track__artist {
+  color: $theme-blue;
+  font-size: 1.6rem;
+  margin-top: 0.24rem;
+}
+
+.explicit {
+  display: inline-block;
+
+  color: $theme-800;
+
+  background-color: $theme-blue;
+  border-radius: 0.36rem;
+
+  padding-inline: 0.75rem;
+  padding-block: 0.25rem;
+  margin-right: 0.5rem;
+}
+
+.track__duration {
+  margin-left: auto;
+}

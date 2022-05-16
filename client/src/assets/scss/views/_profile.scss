@@ -1,12 +1,14 @@
 @use "@scss/abstracts/variables" as *;
-
+.site__wrapper {
+  padding: 5rem;
+}
 .section__profile {
   .content__wrapper {
     display: flex;
     align-items: center;
     gap: 5rem;
 
-    background-color: rgba(white, 10%);
+    background-color: $theme-700;
     border-radius: 2rem;
 
     padding-inline: 2rem;
@@ -55,4 +57,10 @@
       }
     }
   }
+}
+
+.time__toggle {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
 }
