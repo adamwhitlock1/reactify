@@ -11,13 +11,18 @@ import { SectionWrapper, ArtistGrid, TrackList, PlaylistGrid } from '@comps'
 const Profile = () => {
   const [profile, setProfile] = useState(null)
   const [playlists, setPlaylists] = useState(null)
-  const [topArtists, setTopArtists] = useState(null)
+  
+  const [topArtistsLong, setTopArtistsLong] = useState(null)
+  const [topArtistsShort, setTopArtistsShort] = useState(null)
+  const [useArtistsLong, setUseArtistsLong] = useState(null)
+  
   const [topTracksLong, setTopTracksLong] = useState(null)
   const [topTracksShort, setTopTracksShort] = useState(null)
-  const [useLong, setUseLong] = useState(null)
+  const [useTracksLong, setUseTracksLong] = useState(null)
 
   useEffect(() => {
-    setUseLong(true)
+    setUseTracksLong(true)
+    setUseArtistsLong(false)
 
     const fetchData = async () => {
       const userProfile = await getCurrentUserProfile()
@@ -26,8 +31,11 @@ const Profile = () => {
       const userPlaylists = await getCurrentUserPlaylists()
       setPlaylists(userPlaylists.data)
       
-      const userTopArtists = await getCurrentUserTopItems('short_term', 'artists', 8)
-      setTopArtists(userTopArtists.data)
+      const userTopArtistsLong = await getCurrentUserTopItems('long_term', 'artists', 8)
+      setTopArtistsLong(userTopArtistsLong.data)
+      
+      const userTopArtistsShort = await getCurrentUserTopItems('short_term', 'artists', 8)
+      setTopArtistsShort(userTopArtistsShort.data)
       
       const userTopTracksLong = await getCurrentUserTopItems('long_term', 'tracks', 10)
       setTopTracksLong(userTopTracksLong.data)
@@ -40,7 +48,10 @@ const Profile = () => {
     
   }, [])
 
-  const computedTrackTitle = `Top Tracks of ${useLong === true ? 'All Time' : 'the Month'}`
+  console.log(profile)
+
+  const computedTrackTitle = `Top Tracks of ${useTracksLong === true ? 'All Time' : 'the Month'}`
+  const computedArtistsTitle = `Top Artists of ${useArtistsLong === true ? 'All Time' : 'the Month'}`
 
   return (
     <div className="site__wrapper">
@@ -69,13 +80,27 @@ const Profile = () => {
         </section>
       )}
 
-      {topArtists && topTracksLong && playlists && (
+      {topArtistsLong && topTracksLong && playlists && (
         <main>
           <SectionWrapper
             sectionId="section__top-artists"
-            title="Top Artists of the Month"
+            title={ computedArtistsTitle }
             seeAllLink="/top-artists">
-            <ArtistGrid artists={ topArtists.items }/>
+            <div className="time__toggle">
+              <button
+                onClick={ () => setUseArtistsLong(true) }
+                className={ useArtistsLong === true ? 'active' : '' }
+                data-button="select">
+                  All Time
+                </button>
+              <button
+                onClick={ () => setUseArtistsLong(false) }
+                className={ useArtistsLong === false ? 'active' : ''}
+                data-button="select">
+                  This Month
+                </button>
+            </div>
+            <ArtistGrid artists={ useArtistsLong === true ? topArtistsLong.items : topArtistsShort.items }/>
           </SectionWrapper>
           
           <SectionWrapper
@@ -84,26 +109,26 @@ const Profile = () => {
             seeAllLink="/top-tracks">
               <div className="time__toggle">
                 <button
-                  onClick={ () => setUseLong(true) }
-                  className={ useLong === true ? 'active' : '' }
+                  onClick={ () => setUseTracksLong(true) }
+                  className={ useTracksLong === true ? 'active' : '' }
                   data-button="select">
                     All Time
                   </button>
                 <button
-                  onClick={ () => setUseLong(false) }
-                  className={ useLong === false ? 'active' : ''}
+                  onClick={ () => setUseTracksLong(false) }
+                  className={ useTracksLong === false ? 'active' : ''}
                   data-button="select">
                     This Month
                   </button>
               </div>
-              <TrackList tracks={ useLong === true ? topTracksLong.items : topTracksShort.items }/>
+              <TrackList tracks={ useTracksLong === true ? topTracksLong.items : topTracksShort.items }/>
           </SectionWrapper>
 
           <SectionWrapper
             sectionId="section__playlists"
             title="Playlists"
             seeAllLink="/playlists">
-            <PlaylistGrid playlists={ playlists.items.slice(0, 8) }/>
+            <PlaylistGrid playlists={ playlists.items.slice(0, 12) }/>
           </SectionWrapper>
         </main>
       )}

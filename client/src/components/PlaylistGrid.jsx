@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 
 const PlaylistGrid = ({ playlists }) => {
-  console.log(playlists)
   return (
     <>
       {playlists && playlists.length ? (
