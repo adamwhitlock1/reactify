@@ -48,8 +48,6 @@ const Profile = () => {
     
   }, [])
 
-  console.log(profile)
-
   const computedTrackTitle = `Top Tracks of ${useTracksLong === true ? 'All Time' : 'the Month'}`
   const computedArtistsTitle = `Top Artists of ${useArtistsLong === true ? 'All Time' : 'the Month'}`
 

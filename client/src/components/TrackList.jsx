@@ -22,9 +22,15 @@ const TrackList = ({ tracks }) => {
                 )}
                 
                 <div className="track__details">
-                  <a href={ track.external_urls.spotify } target="_blank">
-                    <p className="track__name">{track.name}</p>
-                  </a>
+                  <div className="track__title">
+                    <a href={ track.external_urls.spotify } target="_blank">
+                      <p className="track__name">{track.name}</p>
+                    </a>
+                    
+                    <span className="track__separator">—</span>
+
+                    <button className="lyrics__link">view lyrics</button>
+                  </div>
 
                   <a href={ track.artists[0].external_urls.spotify } target="_blank">
                     <p className="track__artist">

@@ -15,7 +15,7 @@ const PlaylistGrid = ({ playlists }) => {
                     </div>
                   )}
                   <h3 className="grid__item--name">{ playlist.name }</h3>
-                  <h3 className="grid__item--label">{ playlist.type }</h3>
+                  <p className="grid__item--label">{ playlist.type }</p>
                 </Link>
               </li>
             )
