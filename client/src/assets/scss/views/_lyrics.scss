@@ -1,0 +1,28 @@
+@use "@scss/abstracts/variables" as *;
+
+.lyrics__link {
+  color: white;
+  font-size: 1.4rem;
+}
+
+.lyrics__modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-10%, -50%);
+
+  width: 50rem;
+  height: auto;
+
+  color: white;
+  background-color: $theme-800;
+
+  padding-inline: 5rem;
+  padding-block: 3.5rem;
+}
+
+.lyrics__content {
+  font-family: $bodyFont;
+  font-size: 1.8rem;
+}

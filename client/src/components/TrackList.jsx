@@ -1,27 +1,7 @@
-import { useState } from 'react'
-import axios from 'axios'
 import { formatTrackDuration } from '@src/utils'
-import { getTrackId, getTrackLyrics } from '@src/musixmatch'
+import { Lyrics } from '@comps'
 
 const TrackList = ({ tracks }) => {
-  const [trackId, setTrackId] = useState(null)
-  const [trackLyrics, setTrackLyrics] = useState(null)
-  
-  const fetchTrackData = (id) => {
-    axios
-      .get(`http://localhost:8888/track_id?track_isrc=${id}`)
-      .then(res => {
-        const resId = res.data.message.body.track.track_id
-        axios
-          .get(`http://localhost:8888/track_lyrics?track_id=${resId}`)
-          .then(res => {
-            const resLyrics = res.data.message.body.lyrics.lyrics_body
-            console.log(resLyrics)
-            setTrackLyrics(resLyrics)
-          })
-      })
-  }
-  
   return (
     <>
     {tracks && tracks.length ? (
@@ -49,8 +29,8 @@ const TrackList = ({ tracks }) => {
                     </a>
                     
                     <span className="track__separator">—</span>
-
-                    <button onClick={ () => fetchTrackData(track.external_ids.isrc) } className="lyrics__link">view lyrics</button>
+                    
+                    <Lyrics trackId={ track.external_ids.isrc } />
                   </div>
 
                   <a href={ track.artists[0].external_urls.spotify } target="_blank">

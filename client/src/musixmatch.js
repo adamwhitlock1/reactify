@@ -5,5 +5,5 @@ export const getTrackId = (id) => {
 }
 
 export const getTrackLyrics = (id) => {
-  return axios.get(`http://localhost:8888/track_lyrics?track_id=${trackId}`)
+  return axios.get(`http://localhost:8888/track_lyrics?track_id=${id}`)
 }
