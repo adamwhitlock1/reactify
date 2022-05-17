@@ -1,12 +1,18 @@
 require('dotenv').config()
 const express = require('express')
 const axios = require('axios')
+const cors = require('cors')
 const app = express()
 const port = 8888
 
 const CLIENT_ID = process.env.CLIENT_ID
 const CLIENT_SECRET = process.env.CLIENT_SECRET
 const REDIRECT_URI = process.env.REDIRECT_URI
+const MUSIXMATCH_API =process.env.MUSIXMATCH_API
+
+const lyricBaseURL = "https://api.musixmatch.com/ws/1.1"
+
+app.use(cors())
 
 const generateRandomString = length => {
   let text
@@ -121,6 +127,37 @@ app.get('/refresh_token', (req, res) => {
   .then(response => res.send(response.data))
 
   .catch(error => res.send(error))
+})
+
+//HANDLE LYRICS REQUESTS
+app.get('/track_id', (req, res) => {
+  const { track_isrc } = req.query
+
+  const getTrack = async () => {
+    try {
+      const response = await axios.get(`${lyricBaseURL}/track.get?apikey=${MUSIXMATCH_API}&track_isrc=${track_isrc}`)
+      res.send(response.data)
+    } catch(error) {
+      res.send(error)
+    }
+  }
+
+  getTrack()
+})
+
+app.get('/track_lyrics', (req, res) => {
+  const { track_id } = req.query
+
+  const getTrack = async () => {
+    try {
+      const response = await axios.get(`${lyricBaseURL}/track.lyrics.get?apikey=${MUSIXMATCH_API}&track_id=${track_id}`)
+      res.send(response.data)
+    } catch(error) {
+      res.send(error)
+    }
+  }
+
+  getTrack()
 })
 
 

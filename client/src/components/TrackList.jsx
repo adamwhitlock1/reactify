@@ -1,6 +1,42 @@
-import { formatTrackDuration } from "../utils"
+import { useState } from 'react'
+import axios from 'axios'
+import { formatTrackDuration } from '@src/utils'
 
 const TrackList = ({ tracks }) => {
+  const [trackId, setTrackId] = useState(null)
+  const [trackLyrics, setTrackLyrics] = useState(null)
+  
+  const fetchTrackData = (id) => {
+    
+    const getTrackLyrics = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8888/track_lyrics?track_id=${trackId}`)
+        const { data } = res
+        
+        setTrackLyrics(data.message.body.lyrics.lyrics_body)
+        
+      } catch(error) {
+        console.error(error)
+      }
+    }
+    
+    const getTrackId = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8888/track_id?track_isrc=${id}`)
+        const { data } = res
+        
+        setTrackId(data.message.body.track.track_id)
+        
+        getTrackLyrics()
+
+      } catch(error) {
+        console.error(error)
+      }
+    }
+
+    getTrackId()
+  }
+  
   return (
     <>
     {tracks && tracks.length ? (
@@ -29,7 +65,7 @@ const TrackList = ({ tracks }) => {
                     
                     <span className="track__separator">—</span>
 
-                    <button className="lyrics__link">view lyrics</button>
+                    <button onClick={ () => fetchTrackData(track.external_ids.isrc) } className="lyrics__link">view lyrics</button>
                   </div>
 
                   <a href={ track.artists[0].external_urls.spotify } target="_blank">

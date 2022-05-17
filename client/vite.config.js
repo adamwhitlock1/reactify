@@ -23,7 +23,13 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ""),
-      }
+      },
+      '/lyrics': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
     },
   },
 });
