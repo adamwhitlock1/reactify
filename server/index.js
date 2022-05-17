@@ -129,35 +129,24 @@ app.get('/refresh_token', (req, res) => {
   .catch(error => res.send(error))
 })
 
-//HANDLE LYRICS REQUESTS
+//HANDLE REQUEST FOR TRACK ID FROM MUSIXMATCH
 app.get('/track_id', (req, res) => {
   const { track_isrc } = req.query
 
-  const getTrack = async () => {
-    try {
-      const response = await axios.get(`${lyricBaseURL}/track.get?apikey=${MUSIXMATCH_API}&track_isrc=${track_isrc}`)
-      res.send(response.data)
-    } catch(error) {
-      res.send(error)
-    }
-  }
-
-  getTrack()
+  axios
+    .get(`${lyricBaseURL}/track.get?apikey=${MUSIXMATCH_API}&track_isrc=${track_isrc}`)
+    .then(response => res.send(response.data))
+    .catch(error => res.send(error))
 })
 
+//HANDLE REQUEST FOR TRACK LYRICS FROM MUSIXMATCH
 app.get('/track_lyrics', (req, res) => {
   const { track_id } = req.query
-
-  const getTrack = async () => {
-    try {
-      const response = await axios.get(`${lyricBaseURL}/track.lyrics.get?apikey=${MUSIXMATCH_API}&track_id=${track_id}`)
-      res.send(response.data)
-    } catch(error) {
-      res.send(error)
-    }
-  }
-
-  getTrack()
+  
+  axios
+  .get(`${lyricBaseURL}/track.lyrics.get?apikey=${MUSIXMATCH_API}&track_id=${track_id}`)
+  .then(response => res.send(response.data))
+  .catch(error => res.send(error))
 })
 
 

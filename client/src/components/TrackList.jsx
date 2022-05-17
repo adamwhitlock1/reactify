@@ -1,40 +1,25 @@
 import { useState } from 'react'
 import axios from 'axios'
 import { formatTrackDuration } from '@src/utils'
+import { getTrackId, getTrackLyrics } from '@src/musixmatch'
 
 const TrackList = ({ tracks }) => {
   const [trackId, setTrackId] = useState(null)
   const [trackLyrics, setTrackLyrics] = useState(null)
   
   const fetchTrackData = (id) => {
-    
-    const getTrackLyrics = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8888/track_lyrics?track_id=${trackId}`)
-        const { data } = res
-        
-        setTrackLyrics(data.message.body.lyrics.lyrics_body)
-        
-      } catch(error) {
-        console.error(error)
-      }
-    }
-    
-    const getTrackId = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8888/track_id?track_isrc=${id}`)
-        const { data } = res
-        
-        setTrackId(data.message.body.track.track_id)
-        
-        getTrackLyrics()
-
-      } catch(error) {
-        console.error(error)
-      }
-    }
-
-    getTrackId()
+    axios
+      .get(`http://localhost:8888/track_id?track_isrc=${id}`)
+      .then(res => {
+        const resId = res.data.message.body.track.track_id
+        axios
+          .get(`http://localhost:8888/track_lyrics?track_id=${resId}`)
+          .then(res => {
+            const resLyrics = res.data.message.body.lyrics.lyrics_body
+            console.log(resLyrics)
+            setTrackLyrics(resLyrics)
+          })
+      })
   }
   
   return (
