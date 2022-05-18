@@ -32,6 +32,7 @@ const Lyrics = ({ trackId }) => {
 
         {musixLyrics && (
           <div className="lyrics__modal">
+            <p className="test" id="test">Testing</p>
             {musixLyrics.lyrics_body ? (
               <pre className="lyrics__content">{ musixLyrics.lyrics_body }</pre>
             ) : (
