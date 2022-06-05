@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { catchErrors } from '@src/utils'
 import {
   getCurrentUserProfile,
@@ -11,41 +11,41 @@ import { SectionWrapper, ArtistGrid, TrackList, PlaylistGrid } from '@comps'
 const Profile = () => {
   const [profile, setProfile] = useState(null)
   const [playlists, setPlaylists] = useState(null)
-  
+
   const [topArtistsLong, setTopArtistsLong] = useState(null)
   const [topArtistsShort, setTopArtistsShort] = useState(null)
   const [useArtistsLong, setUseArtistsLong] = useState(null)
-  
+
   const [topTracksLong, setTopTracksLong] = useState(null)
   const [topTracksShort, setTopTracksShort] = useState(null)
   const [useTracksLong, setUseTracksLong] = useState(null)
+
+  const fetchData =  useCallback( async () => {
+    const userProfile = await getCurrentUserProfile()
+    setProfile(userProfile.data)
+
+    const userPlaylists = await getCurrentUserPlaylists()
+    setPlaylists(userPlaylists.data)
+
+    const userTopArtistsLong = await getCurrentUserTopItems('long_term', 'artists', 8)
+    setTopArtistsLong(userTopArtistsLong.data)
+
+    const userTopArtistsShort = await getCurrentUserTopItems('short_term', 'artists', 8)
+    setTopArtistsShort(userTopArtistsShort.data)
+
+    const userTopTracksLong = await getCurrentUserTopItems('long_term', 'tracks', 10)
+    setTopTracksLong(userTopTracksLong.data)
+
+    const userTopTracksShort = await getCurrentUserTopItems('short_term', 'tracks', 10)
+    setTopTracksShort(userTopTracksShort.data)
+  })
 
   useEffect(() => {
     setUseTracksLong(true)
     setUseArtistsLong(false)
 
-    const fetchData = async () => {
-      const userProfile = await getCurrentUserProfile()
-      setProfile(userProfile.data)
-      
-      const userPlaylists = await getCurrentUserPlaylists()
-      setPlaylists(userPlaylists.data)
-      
-      const userTopArtistsLong = await getCurrentUserTopItems('long_term', 'artists', 8)
-      setTopArtistsLong(userTopArtistsLong.data)
-      
-      const userTopArtistsShort = await getCurrentUserTopItems('short_term', 'artists', 8)
-      setTopArtistsShort(userTopArtistsShort.data)
-      
-      const userTopTracksLong = await getCurrentUserTopItems('long_term', 'tracks', 10)
-      setTopTracksLong(userTopTracksLong.data)
-      
-      const userTopTracksShort = await getCurrentUserTopItems('short_term', 'tracks', 10)
-      setTopTracksShort(userTopTracksShort.data)
-    }
-
     catchErrors(fetchData())
-    
+
   }, [])
 
   const computedTrackTitle = `Top Tracks of ${useTracksLong === true ? 'All Time' : 'the Month'}`
@@ -100,7 +100,7 @@ const Profile = () => {
             </div>
             <ArtistGrid artists={ useArtistsLong === true ? topArtistsLong.items : topArtistsShort.items }/>
           </SectionWrapper>
-          
+
           <SectionWrapper
             sectionId="section__top-tracks"
             title={ computedTrackTitle }
