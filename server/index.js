@@ -2,16 +2,26 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const datefns = require('date-fns');
 
 const app = express();
 const port = 8888;
 
-const { isAfter, sub } = datefns;
+const {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+  MUSIXMATCH_API,
+  REFRESH_TOKEN,
+} = process.env;
 
-const { readTokenStorage, writeTokenStorage } = require('./storage');
+// storage utilities for writing and reading token.json file
+const {
+  readTokenStorage,
+  writeTokenStorage,
+  isTimestampExpired,
+} = require('./storage');
 
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, MUSIXMATCH_API } = process.env;
+const { requestNewAccessToken } = require('./spotify');
 
 const lyricBaseURL = 'https://api.musixmatch.com/ws/1.1';
 
@@ -116,35 +126,9 @@ app.get('/callback', (req, res) => {
 });
 
 // REFRESH TOKEN
-app.get('/refresh_token', (req, res) => {
-  const { refresh_token } = readTokenStorage();
-
-  const refreshparams = new URLSearchParams({
-    grant_type: 'refresh_token',
-    refresh_token,
-  }).toString();
-
-  axios({
-    method: 'post',
-    url: 'https://accounts.spotify.com/api/token',
-    data: refreshparams,
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${new Buffer.from(
-        `${CLIENT_ID}:${CLIENT_SECRET}`
-      ).toString('base64')}`,
-    },
-  })
-    .then((response) => {
-      const {
-        data: { access_token, expires_in },
-      } = response;
-      console.log('RESPONSE', response.data);
-      writeTokenStorage({ access_token, expires_in });
-      res.send(response.data);
-    })
-
-    .catch((error) => res.send(error));
+app.get('/refresh_token', async (req, res) => {
+  const result = await requestNewAccessToken();
+  res.json(result);
 });
 
 // HANDLE REQUEST FOR TRACK ID FROM MUSIXMATCH
@@ -171,31 +155,14 @@ app.get('/track_lyrics', (req, res) => {
     .catch((error) => res.send(error));
 });
 
-app.post('/save-token', (req, res) => {
-  const { accessToken } = req.query;
-  const { refreshToken } = req.query;
-  const { expireTime } = req.query;
-  const { tokenTimestamp } = req.query;
+app.post('/save-token', async (req, res) => {
+  const { shouldRefresh, time_stamp } = await isTimestampExpired();
 
-  console.log({ body: req.body });
-
-  const { refresh_token, time_stamp } = readTokenStorage();
-
-  const shouldRefresh = isAfter(
-    new Date(),
-    datefns.add(time_stamp, { minutes: 59, seconds: 30 })
-  );
-
-  console.log({
-    shouldRefresh,
-    timeStampFormatted: datefns.format(time_stamp, 'MMM d yyyy h:mm:ss b'),
-  });
-
-  res.json({ refresh_token, time_stamp, shouldRefresh });
+  res.json({ refresh_token: REFRESH_TOKEN, time_stamp, shouldRefresh });
 });
 
-app.get('/me', (req, res) => {
-  const { access_token } = readTokenStorage();
+app.get('/me', async (req, res) => {
+  const { access_token } = await readTokenStorage();
 
   axios
     .get(`${spotifyApiURL}/me`, {
