@@ -1,20 +1,15 @@
 require('dotenv').config();
 const axios = require('axios');
+const { handleError } = require('../util');
 
-const { readTokenStorage, writeTokenStorage } = require('../storage');
+const { getStoredAccessToken, writeTokenStorage } = require('../storage');
 
 const URLS = {
   MAIN: 'https://api.spotify.com/v1',
   TOKEN: 'https://accounts.spotify.com/api/token',
 };
 
-const {
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI,
-  MUSIXMATCH_API,
-  REFRESH_TOKEN,
-} = process.env;
+const { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } = process.env;
 
 const requestNewAccessToken = async () => {
   const refreshparams = new URLSearchParams({
@@ -37,13 +32,67 @@ const requestNewAccessToken = async () => {
       },
     });
 
-    console.log('SUCCESS!', { access_token, expires_in });
     await writeTokenStorage({ access_token, expires_in });
-    return { access_token, expires_in };
+    return access_token;
   } catch (e) {
-    console.error('ERROR REQUESTING NEW ACCESS TOKEN', e);
-    throw new Error('ERROR REQUESTING NEW ACCESS TOKEN');
+    return handleError(requestNewAccessToken.name, e);
   }
 };
 
-module.exports = { requestNewAccessToken };
+const getOrRequestAccessToken = async () => {
+  try {
+    const token = await getStoredAccessToken();
+    return token || (await requestNewAccessToken());
+  } catch (e) {
+    return handleError(getOrRequestAccessToken.name, e);
+  }
+};
+
+const me = async () => {
+  try {
+    const access_token = await getOrRequestAccessToken();
+    const { data } = await axios.get(`${URLS.MAIN}/me`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return data;
+  } catch (e) {
+    return handleError(me.name, e);
+  }
+};
+
+const playlists = async (limit) => {
+  try {
+    const access_token = await getOrRequestAccessToken();
+    const { data } = await axios.get(`${URLS.MAIN}/me/playlists`, {
+      params: { limit },
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return data;
+  } catch (e) {
+    return handleError(me.name, e);
+  }
+};
+
+const topItems = async ({ type, time_range, limit }) => {
+  try {
+    const access_token = await getOrRequestAccessToken();
+    const { data } = await axios.get(`${URLS.MAIN}/me/top/${type}`, {
+      params: { limit, time_range },
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return data;
+  } catch (e) {
+    return handleError(me.name, e);
+  }
+};
+
+module.exports = { requestNewAccessToken, me, playlists, topItems };

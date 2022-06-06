@@ -4,11 +4,11 @@
     // when importing modules that use the Babel module-resolver plugin
     "baseUrl": ".",
     "paths": {
-      "@src":  ["../src"],
-      "@scss":  ["../src/assets/scss"],
-      "@img":  ["../src/assets/img"],
-      "@ico":  ["../src/assets/ico"],
-      "@comps":  ["../src/components"],
+      "@src":  ["../client/src"],
+      "@scss":  ["../client/src/assets/scss"],
+      "@img":  ["../client/src/assets/img"],
+      "@ico":  ["../client/src/assets/ico"],
+      "@comps":  ["../client/src/components"],
     },
     // adding this line allows you to ⌘click JSX imports to open the source
     "jsx": "react",

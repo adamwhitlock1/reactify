@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const datefns = require('date-fns');
+const { handleError } = require('../util');
 
 const storagePath = path.resolve(__dirname, './token.json');
 
@@ -33,15 +34,23 @@ const writeTokenStorage = async ({
   }
 };
 
-const isTimestampExpired = async () => {
-  const { time_stamp } = await readTokenStorage();
+const getStoredAccessToken = async () => {
+  try {
+    const { time_stamp, access_token } = await readTokenStorage();
 
-  const shouldRefresh = datefns.isAfter(
-    new Date(),
-    datefns.add(time_stamp, { minutes: 59, seconds: 30 })
-  );
+    const shouldRefresh = datefns.isAfter(
+      new Date(),
+      datefns.add(time_stamp, { minutes: 59, seconds: 30 })
+    );
 
-  return { shouldRefresh, time_stamp };
+    if (shouldRefresh) {
+      return null;
+    }
+
+    return access_token;
+  } catch (e) {
+    return handleError(getStoredAccessToken.name, e);
+  }
 };
 
-module.exports = { readTokenStorage, writeTokenStorage, isTimestampExpired };
+module.exports = { readTokenStorage, writeTokenStorage, getStoredAccessToken };

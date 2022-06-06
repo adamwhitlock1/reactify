@@ -6,26 +6,14 @@ const cors = require('cors');
 const app = express();
 const port = 8888;
 
-const {
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI,
-  MUSIXMATCH_API,
-  REFRESH_TOKEN,
-} = process.env;
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, MUSIXMATCH_API } = process.env;
 
 // storage utilities for writing and reading token.json file
-const {
-  readTokenStorage,
-  writeTokenStorage,
-  isTimestampExpired,
-} = require('./storage');
+const { getStoredAccessToken } = require('./storage');
 
-const { requestNewAccessToken } = require('./spotify');
+const { requestNewAccessToken, me, playlists, topItems } = require('./spotify');
 
 const lyricBaseURL = 'https://api.musixmatch.com/ws/1.1';
-
-const spotifyApiURL = 'https://api.spotify.com/v1';
 
 app.use(cors());
 
@@ -155,24 +143,43 @@ app.get('/track_lyrics', (req, res) => {
     .catch((error) => res.send(error));
 });
 
-app.post('/save-token', async (req, res) => {
-  const { shouldRefresh, time_stamp } = await isTimestampExpired();
+app.post('/test-token', async (req, res) => {
+  const token = await getStoredAccessToken();
 
-  res.json({ refresh_token: REFRESH_TOKEN, time_stamp, shouldRefresh });
+  res.json({ token });
 });
 
 app.get('/me', async (req, res) => {
-  const { access_token } = await readTokenStorage();
+  try {
+    const response = await me();
+    res.json(response);
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
+});
 
-  axios
-    .get(`${spotifyApiURL}/me`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-    .then((response) => res.send(response.data))
-    .catch((err) => res.send(err));
+app.get('/me/playlists', async (req, res) => {
+  try {
+    const limit = req.query?.limit;
+    const response = await playlists(limit);
+    res.json(response);
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
+});
+
+app.get('/me/top/:type', async (req, res) => {
+  try {
+    const { type } = req.params;
+    const { limit, time_range } = req.query;
+    const response = await topItems({ limit, type, time_range });
+    res.json(response);
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
 });
 
 app.listen(port, () => {
