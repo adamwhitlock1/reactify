@@ -8,9 +8,6 @@ const port = process.env.PORT || 8888;
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, MUSIXMATCH_API } = process.env;
 
-// storage utilities for writing and reading token.json file
-const { getStoredAccessToken } = require('./storage');
-
 const { requestNewAccessToken, me, playlists, topItems } = require('./spotify');
 
 const lyricBaseURL = 'https://api.musixmatch.com/ws/1.1';
