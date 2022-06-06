@@ -13,7 +13,7 @@ export default defineConfig({
       '@scss': path.resolve(__dirname, './src/assets/scss'),
       '@img': path.resolve(__dirname, './src/assets/img'),
       '@ico': path.resolve(__dirname, './src/assets/ico'),
-      '@comps': path.resolve(__dirname, './src/components')
+      '@comps': path.resolve(__dirname, './src/components'),
     },
   },
   server: {
@@ -22,13 +22,13 @@ export default defineConfig({
         target: 'http://localhost:8888',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (tokenPath) => tokenPath.replace(/^\/api/, ''),
       },
       '/lyrics': {
         target: 'http://localhost:8888',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (lyricsPath) => lyricsPath.replace(/^\/api/, ''),
       },
     },
   },

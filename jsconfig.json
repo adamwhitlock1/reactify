@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    // These compilerOptions settings are required for Intellisense to function
+    // when importing modules that use the Babel module-resolver plugin
+    "baseUrl": ".",
+    "paths": {
+      "@src":  ["../client/src"],
+      "@scss":  ["../client/src/assets/scss"],
+      "@img":  ["../client/src/assets/img"],
+      "@ico":  ["../client/src/assets/ico"],
+      "@comps":  ["../client/src/components"],
+    },
+    // adding this line allows you to ⌘click JSX imports to open the source
+    "jsx": "react",
+    // adding this line allows you to ⌘click JSON imports to open the source
+    "resolveJsonModule": true
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "coverage"
+  ]
+}
