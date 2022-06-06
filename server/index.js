@@ -37,13 +37,8 @@ const generateRandomString = (length) => {
   return text;
 };
 
-app.get('/', (req, res) => {
-  const jsonData = {
-    name: 'Craig',
-    age: 40,
-  };
-
-  res.json(jsonData);
+app.get('/status', (req, res) => {
+  res.send('success');
 });
 
 // LOGIN
@@ -141,12 +136,6 @@ app.get('/track_lyrics', (req, res) => {
     )
     .then((response) => res.send(response.data))
     .catch((error) => res.send(error));
-});
-
-app.post('/test-token', async (req, res) => {
-  const token = await getStoredAccessToken();
-
-  res.json({ token });
 });
 
 app.get('/me', async (req, res) => {

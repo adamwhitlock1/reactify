@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8888';
+const baseURL = import.meta.env.VITE_API_ADDRESS;
+
+console.log(baseURL);
+
+axios.defaults.baseURL = baseURL;
 axios.defaults.headers['Content-Type'] = 'application/json';
 
 export const getCurrentUserProfile = () => axios.get('/me');
