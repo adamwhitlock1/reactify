@@ -5,7 +5,8 @@
   "author": "Daniel LittleThunder",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "node server/index.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "server": "nodemon server/index.js",
     "client": "cd client && yarn dev",
     "postinstall": "cd client && yarn install"
