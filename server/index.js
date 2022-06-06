@@ -4,7 +4,7 @@ const axios = require('axios');
 const cors = require('cors');
 
 const app = express();
-const port = 8888;
+const port = process.env.PORT || 8888;
 
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, MUSIXMATCH_API } = process.env;
 
