@@ -1,8 +1,9 @@
-export { default as Login } from '@comps/Login'
-export { default as Header } from '@comps/Header'
-export { default as Profile } from '@comps/Profile'
-export { default as SectionWrapper } from '@comps/SectionWrapper'
-export { default as ArtistGrid } from '@comps/ArtistGrid'
-export { default as TrackList } from '@comps/TrackList'
-export { default as PlaylistGrid } from '@comps/PlaylistGrid'
-export { default as Me } from '@comps/Me'
+export { default as Login } from '@comps/Login';
+export { default as Header } from '@comps/Header';
+export { default as Profile } from '@comps/Profile';
+export { default as SectionWrapper } from '@comps/SectionWrapper';
+export { default as ArtistGrid } from '@comps/ArtistGrid';
+export { default as TrackList } from '@comps/TrackList';
+export { default as PlaylistGrid } from '@comps/PlaylistGrid';
+export { default as Me } from '@comps/Me';
+export { default as Lyrics } from '@comps/Lyrics';
